@@ -32,5 +32,43 @@ Several classification models were tested, and Random Forest was selected as the
 ### Prediction of Missing Labels
 The trained model was applied only to unlabelled segments. This produced predicted transport mode labels while keeping original user-provided labels unchanged.
 
-### Visualization
-The resulting labels can be used for map-based visualization, where different transport modes are shown in different colors along the trajectory and potentially animated over time.
+## Results Overview
+
+The final workflow used a speed-aware segmentation approach combined with a Random Forest classifier to predict transportation modes from GPS trajectories. Instead of classifying whole trajectory files at once, the data was first divided into shorter movement segments based on time gaps, label changes, and significant changes in speed. This allowed the model to detect more detailed travel phases, such as walking to public transport, riding a vehicle, and walking again.
+
+The Random Forest model was trained on labelled GeoLife trajectory segments using engineered movement features such as speed, acceleration, distance, duration, stop rate, straightness ratio, and altitude-related variables. The model was evaluated using a user-based train-test split, so that the same user did not appear in both training and test data.
+
+### Model Performance
+
+The detailed Random Forest model performed best overall among the tested models.
+
+| Model | Accuracy | Balanced Accuracy | Macro F1 | Weighted F1 |
+|---|---:|---:|---:|---:|
+| Baseline | 0.423 | 0.167 | 0.099 | 0.252 |
+| Logistic Regression | 0.795 | 0.691 | 0.658 | 0.794 |
+| Random Forest | 0.861 | 0.760 | 0.764 | 0.859 |
+| Gradient Boosting | 0.855 | 0.750 | 0.755 | 0.852 |
+
+The best-performing classes were walking and biking, which had the clearest movement patterns. Road-based and rail-based modes were harder to classify, especially bus, car/taxi, subway, and train, because these modes can have overlapping speed and acceleration patterns.
+
+### Final Prediction Output
+
+After evaluation, the Random Forest model was applied to the full GeoLife dataset. Original user-given labels were preserved, and the model was only used for unlabelled GPS segments.
+
+| Category | Number of GPS points |
+|---|---:|
+| Total GPS points | 24,876,978 |
+| Original user-labelled points | 5,440,616 |
+| Random Forest predicted points | 19,372,673 |
+| Still unlabelled / invalid points | 63,689 |
+
+This means that the final workflow successfully assigned predicted transportation modes to most previously unlabelled GPS points while leaving very short or unreliable segments unclassified.
+
+### Findings
+
+- Speed-aware segmentation produced more realistic movement phases than simple time-based trajectory splitting.
+- Random Forest was the best practical model for the detailed classification task.
+- Speed-related features were the most important predictors, but the model also used acceleration, distance, duration, stop rate, straightness, and altitude features.
+- Walking and biking were classified most confidently.
+- Bus, car/taxi, subway, and train were more difficult due to overlapping movement behaviour and GPS noise.
+- The final per-user parquet output is suitable for further analysis and map-based trajectory visualization.
