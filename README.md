@@ -60,11 +60,25 @@ After evaluation, the Random Forest model was applied to the full GeoLife datase
 | Category | Number of GPS points |
 |---|---:|
 | Total GPS points | 24,876,978 |
-| Original user-labelled points | 5,440,616 |
+| Original user-labelled points | 5,425,541 |
 | Random Forest predicted points | 19,372,673 |
 | Still unlabelled / invalid points | 63,689 |
+| Excluded rare-mode points | 15,075 |
 
 This means that the final workflow successfully assigned predicted transportation modes to most previously unlabelled GPS points while leaving very short or unreliable segments unclassified.
+
+
+### Random Forest Prediction Confidence by Mode
+
+| Mode | Number of segments | Mean confidence | Median confidence | Min confidence | Max confidence |
+|---|---:|---:|---:|---:|---:|
+| Bike | 237 | 0.808 | 0.852 | 0.319 | 0.995 |
+| Walk | 219 | 0.769 | 0.820 | 0.294 | 0.998 |
+| Car or taxi | 76 | 0.607 | 0.570 | 0.268 | 0.983 |
+| Bus | 56 | 0.545 | 0.488 | 0.265 | 0.964 |
+| Subway | 14 | 0.449 | 0.442 | 0.340 | 0.606 |
+
+The Random Forest predictions were most confident for biking and walking segments, which also had the clearest movement patterns in the model. Confidence was lower for road-based and rail-based transport modes such as car/taxi, bus, and subway, suggesting that these modes are harder to distinguish from GPS-derived movement features alone. This is expected because they can share similar speed and acceleration patterns, especially in urban traffic or stop-and-go movement.
 
 ### Findings
 
