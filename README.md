@@ -46,8 +46,10 @@ The detailed Random Forest model performed best overall among the tested models.
 |---|---:|---:|---:|---:|
 | Baseline | 0.423 | 0.167 | 0.099 | 0.252 |
 | Logistic Regression | 0.795 | 0.691 | 0.658 | 0.794 |
-| Random Forest | 0.861 | 0.760 | 0.764 | 0.859 |
-| Gradient Boosting | 0.855 | 0.750 | 0.755 | 0.852 |
+| Random Forest | 0.861 | 0.760 | 0.764 | 0.858 |
+| Gradient Boosting | 0.854 | 0.749 | 0.755 | 0.852 |
+
+Random Forest achieved the highest overall performance, with the best accuracy, macro F1-score, and weighted F1-score. Gradient Boosting performed very similarly, while Logistic Regression provided a simpler but less accurate baseline comparison.
 
 The best-performing classes were walking and biking, which had the clearest movement patterns. Road-based and rail-based modes were harder to classify, especially bus, car/taxi, subway, and train, because these modes can have overlapping speed and acceleration patterns.
 
